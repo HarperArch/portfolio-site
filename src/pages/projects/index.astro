@@ -1,0 +1,115 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("projects");
+const sorted = [...all].sort((a, b) => {
+  const ao = a.data.order ?? 999;
+  const bo = b.data.order ?? 999;
+  if (ao !== bo) return ao - bo;
+  const ad = new Date(a.data.date);
+  const bd = new Date(b.data.date);
+  return bd.getTime() - ad.getTime();
+});
+
+const tagSet = new Set<string>();
+for (const p of sorted) {
+  for (const t of p.data.tags) tagSet.add(t);
+}
+const tags = [...tagSet].sort((a, b) => a.localeCompare(b));
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected software projects with repositories, demos, and written reports."
+>
+  <header class="stack page-head">
+    <h1 class="h1">Projects</h1>
+    <p class="muted">
+      Filter by tag or open a project for the full write-up. Add new entries as
+      Markdown files in <code>src/content/projects/</code>.
+    </p>
+  </header>
+
+  {
+    tags.length > 0 && (
+      <div class="filters" role="group" aria-label="Filter by tag">
+        <button type="button" class="btn tag-btn active" data-tag="all">
+          All
+        </button>
+        {tags.map((t) => (
+          <button type="button" class="btn tag-btn" data-tag={t}>
+            {t}
+          </button>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="grid-cards project-grid" id="project-grid">
+    {
+      sorted.map((p) => (
+        <div
+          class="project-item"
+          data-tags={p.data.tags.join(",")}
+        >
+          <ProjectCard project={p} />
+        </div>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  const grid = document.getElementById("project-grid");
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".tag-btn");
+
+  function apply(tag: string) {
+    const items = grid?.querySelectorAll<HTMLElement>(".project-item");
+    items?.forEach((el) => {
+      const tags = (el.dataset.tags ?? "").split(",").filter(Boolean);
+      const show = tag === "all" || tags.includes(tag);
+      el.style.display = show ? "" : "none";
+    });
+    buttons.forEach((b) => {
+      b.classList.toggle("active", b.dataset.tag === tag);
+    });
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => apply(btn.dataset.tag ?? "all"));
+  });
+</script>
+
+<style>
+  .page-head {
+    margin-bottom: 0.25rem;
+  }
+  .page-head code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tag-btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.85rem;
+    transition: border-color var(--t-med) var(--ease),
+      color var(--t-med) var(--ease), background-color var(--t-med) var(--ease);
+  }
+  .tag-btn:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    background: color-mix(in oklab, var(--accent) 5%, var(--surface));
+  }
+  .tag-btn.active {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    background: var(--accent-soft);
+    font-weight: 600;
+  }
+</style>

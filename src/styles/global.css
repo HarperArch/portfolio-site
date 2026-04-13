@@ -1,0 +1,266 @@
+:root {
+  color-scheme: light dark;
+  /* Warm neutral + sage — soft, professional, slightly feminine */
+  --bg: #f7f5f2;
+  --bg-soft: #f1ede7;
+  --surface: #faf8f5;
+  --text: #2e2e2e;
+  --muted: #6b6b6b;
+  --border: #e6e1da;
+  --accent: #7c9a7e;
+  --accent-secondary: #5f7a61;
+  --accent-hover: #536f55;
+  --accent-soft: color-mix(in oklab, var(--accent) 14%, var(--surface));
+  --accent-warm: #a68a64;
+  --ring: rgba(124, 154, 126, 0.42);
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+    monospace;
+  --radius: 14px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 2px rgba(46, 46, 46, 0.035);
+  --shadow-md: 0 2px 10px rgba(46, 46, 46, 0.055);
+  --shadow-lift: 0 6px 18px rgba(46, 46, 46, 0.065);
+  --max: 68rem;
+  --btn-on-accent: #faf8f5;
+  --ease: cubic-bezier(0.33, 1, 0.68, 1);
+  --t-fast: 160ms;
+  --t-med: 240ms;
+}
+
+html[data-theme="dark"] {
+  --bg: #1b1d1b;
+  --bg-soft: #222522;
+  --surface: #262928;
+  --text: #f0eeeb;
+  --muted: #a8a6a0;
+  --border: #383b38;
+  --accent: #9ab89c;
+  --accent-secondary: #7a947c;
+  --accent-hover: #b4c9b6;
+  --accent-soft: color-mix(in oklab, var(--accent) 16%, var(--surface));
+  --accent-warm: #c4a574;
+  --ring: rgba(154, 184, 156, 0.42);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+  --shadow-md: 0 3px 12px rgba(0, 0, 0, 0.26);
+  --shadow-lift: 0 8px 22px rgba(0, 0, 0, 0.32);
+  --btn-on-accent: #1b1d1b;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --bg: #1b1d1b;
+    --bg-soft: #222522;
+    --surface: #262928;
+    --text: #f0eeeb;
+    --muted: #a8a6a0;
+    --border: #383b38;
+    --accent: #9ab89c;
+    --accent-secondary: #7a947c;
+    --accent-hover: #b4c9b6;
+    --accent-soft: color-mix(in oklab, var(--accent) 16%, var(--surface));
+    --accent-warm: #c4a574;
+    --ring: rgba(154, 184, 156, 0.42);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+    --shadow-md: 0 3px 12px rgba(0, 0, 0, 0.26);
+    --shadow-lift: 0 8px 22px rgba(0, 0, 0, 0.32);
+    --btn-on-accent: #1b1d1b;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.72;
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent-secondary);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--t-med) var(--ease);
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 0.5rem 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+.wrap {
+  width: min(100% - 2.5rem, var(--max));
+  margin-inline: auto;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.h1 {
+  font-family: var(--font-sans);
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.h2 {
+  font-family: var(--font-sans);
+  font-size: 1.38rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.28;
+  margin: 0 0 0.85rem;
+  color: var(--text);
+}
+
+.surface {
+  background: var(--surface);
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--t-med) var(--ease),
+    border-color var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.78rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 11%, var(--bg));
+  color: var(--accent-secondary);
+  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--border));
+  letter-spacing: 0.02em;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.58rem 1.1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--t-med) var(--ease),
+    border-color var(--t-med) var(--ease), color var(--t-med) var(--ease),
+    box-shadow var(--t-med) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.btn:hover {
+  background: color-mix(in oklab, var(--accent) 6%, var(--surface));
+  border-color: color-mix(in oklab, var(--accent) 35%, var(--border));
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 65%, var(--accent-secondary));
+  color: var(--btn-on-accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--btn-on-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.prose {
+  max-width: 65ch;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+.prose :where(h2, h3) {
+  margin-top: 1.65rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.prose :where(h2) {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.prose pre {
+  padding: 1rem;
+  overflow: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 88%, var(--border));
+  font-size: 0.9rem;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.grid-cards {
+  display: grid;
+  gap: 1.35rem;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+}
+
+@media (min-width: 640px) {
+  .grid-cards {
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  }
+}

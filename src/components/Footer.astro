@@ -1,0 +1,21 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer wrap">
+  <p class="muted">
+    © {year} — Built with <a href="https://astro.build/">Astro</a>. Update
+    <a href="/projects">projects</a> in <code>src/content/projects/</code>.
+  </p>
+</footer>
+
+<style>
+  .footer {
+    margin-top: auto;
+    padding: 3rem 0 3.5rem;
+  }
+  .footer code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+</style>

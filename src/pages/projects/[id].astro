@@ -1,0 +1,154 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, shortDescription, date, dateRange, role, tags, links } =
+  entry.data;
+const d = new Date(date);
+---
+
+<BaseLayout title={title} description={shortDescription}>
+  <article class="detail stack">
+    <header>
+      <p class="muted meta-line">
+        <time datetime={d.toISOString().slice(0, 10)}>
+          {d.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </time>
+        {dateRange && <> · {dateRange}</>}
+        {role && <> · {role}</>}
+      </p>
+      <h1 class="h1">{title}</h1>
+      <p class="lede">{shortDescription}</p>
+      {
+        tags.length > 0 && (
+          <div class="tag-row">
+            {tags.map((t) => (
+              <span class="pill">{t}</span>
+            ))}
+          </div>
+        )
+      }
+      <div class="links-row">
+        {
+          links.github && (
+            <a
+              class="btn btn-primary"
+              href={links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          )
+        }
+        {
+          links.demo && (
+            <a
+              class="btn"
+              href={links.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Live demo
+            </a>
+          )
+        }
+        {
+          links.report && (
+            <a
+              class="btn"
+              href={links.report}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Report / PDF
+            </a>
+          )
+        }
+        {
+          links.notebook && (
+            <a
+              class="btn"
+              href={links.notebook}
+              {...(String(links.notebook).startsWith("http")
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : { download: true })}
+            >
+              Jupyter notebook
+            </a>
+          )
+        }
+        {
+          links.recommendation && (
+            <a
+              class="btn"
+              href={links.recommendation}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Letter of recommendation
+            </a>
+          )
+        }
+        <a class="btn" href="/projects">← All projects</a>
+      </div>
+    </header>
+
+    <div class="prose surface body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .detail {
+    max-width: 54rem;
+  }
+
+  /* Wider than global `.prose` (65ch) so Problem / Approach / Outcome breathe */
+  .body.prose {
+    max-width: min(76ch, 100%);
+  }
+  .meta-line {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+  }
+  .lede {
+    font-size: 1.12rem;
+    line-height: 1.72;
+    margin: 0 0 0.75rem;
+    max-width: 55ch;
+  }
+  .links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .body {
+    padding: 1.5rem 1.6rem;
+    margin-top: 0.65rem;
+    border-radius: var(--radius-lg);
+  }
+  .body :global(h2) {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .body :global(p) {
+    margin: 0.65rem 0;
+  }
+</style>

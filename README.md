@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal portfolio (Astro)
 
-## Getting Started
+Static site with a Markdown-driven project list, home bio, resume page, and contact links.
 
-First, run the development server:
+## Develop
+
+Requires Node 22+.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Edit copy in `src/config/site.ts` and add projects as `.md` files under `src/content/projects/`. See existing samples for frontmatter fields (`title`, `shortDescription`, `date`, `tags`, `featured`, `links.github`, `links.demo`, `links.report`, etc.).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Put `resume.pdf` in `public/resume.pdf` for the resume viewer and download button.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Production URL
 
-## Learn More
+Set the real site URL so canonical links and the sitemap are correct:
 
-To learn more about Next.js, take a look at the following resources:
+- **Local / default:** `SITE_URL` defaults to `https://example.com` in `astro.config.mjs`. Override when building:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  ```bash
+  SITE_URL=https://your.domain npm run build
+  ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Vercel / Netlify:** Add an environment variable `SITE_URL` matching your production URL.
 
-## Deploy on Vercel
+- **GitHub Pages:** In the repo, add variable `SITE_URL` (Settings → Secrets and variables → Actions → Variables), e.g. `https://username.github.io/repo-name/`. If the site is not at the domain root, also set Astro’s `base` in `astro.config.mjs` to `'/repo-name/'` and redeploy.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Host | Notes |
+|------|--------|
+| **Vercel** | Connect the repo; framework auto-detects Astro. Set `SITE_URL`. |
+| **Netlify** | Uses `netlify.toml` (`npm run build`, publish `dist`). Set `SITE_URL`. |
+| **GitHub Pages** | Enable Pages with “GitHub Actions”. Workflow: `.github/workflows/deploy-github-pages.yml`. Configure `SITE_URL` as above. |
+
+After deployment, update `public/robots.txt` with your sitemap URL if you want crawlers to discover it explicitly (the sitemap is still emitted at `/sitemap-index.xml`).

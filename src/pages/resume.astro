@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../config/site";
+---
+
+<BaseLayout
+  title="Resume"
+  description="Downloadable resume / CV and embedded PDF viewer."
+>
+  <header class="stack page-head">
+    <h1 class="h1">Resume</h1>
+  </header>
+
+  <div class="actions">
+    <a
+      class="btn btn-primary"
+      href={site.resumePdfPath}
+      download
+    >
+      Download PDF
+    </a>
+  </div>
+
+  <div class="viewer surface">
+    <iframe
+      title="Resume PDF"
+      src={site.resumePdfPath}
+      class="pdf-frame"
+      loading="lazy"
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .actions {
+    margin-bottom: 1rem;
+  }
+  .viewer {
+    min-height: 70vh;
+    overflow: hidden;
+  }
+  .pdf-frame {
+    width: 100%;
+    min-height: 70vh;
+    border: none;
+    display: block;
+  }
+</style>

@@ -1,0 +1,168 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { site } from "../config/site";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("projects");
+const featured = all
+  .filter((p) => p.data.featured)
+  .sort((a, b) => {
+    const ao = a.data.order ?? 999;
+    const bo = b.data.order ?? 999;
+    if (ao !== bo) return ao - bo;
+    const ad = new Date(a.data.date);
+    const bd = new Date(b.data.date);
+    return bd.getTime() - ad.getTime();
+  })
+  .slice(0, 6);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy stack">
+        <p class="eyebrow muted">{site.tagline}</p>
+        <h1 class="h1">{site.title}</h1>
+        {site.bio.map((p) => <p class="lede">{p}</p>)}
+        <div class="skills" aria-label="Skills and technologies">
+          {site.skills.map((s) => <span class="pill">{s}</span>)}
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/projects">View all projects</a>
+          <a class="btn" href="/resume">Resume</a>
+          <a class="btn" href="/contact">Contact</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img
+          src={site.headshotSrc}
+          alt={site.headshotAlt}
+          width="1024"
+          height="578"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section class="featured" aria-labelledby="featured-heading">
+        <h2 id="featured-heading" class="h2">
+          Featured projects
+        </h2>
+        <div class="grid-cards">
+          {featured.map((p) => (
+            <ProjectCard project={p} />
+          ))}
+        </div>
+        <p class="muted see-all">
+          <a href="/projects">See everything →</a>
+        </p>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .hero {
+    margin-bottom: 4.25rem;
+    padding: 0.75rem 0 1.25rem;
+  }
+
+  .hero-inner {
+    display: grid;
+    gap: 2.25rem 2.75rem;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, min(40vw, 440px));
+      gap: 3rem 3.5rem;
+    }
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  .hero-photo {
+    justify-self: center;
+    width: 100%;
+    max-width: min(100%, 440px);
+  }
+
+  @media (min-width: 900px) {
+    .hero-photo {
+      justify-self: end;
+      max-width: min(460px, 100%);
+    }
+  }
+
+  .hero-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: min(440px, 56vh);
+    object-fit: contain;
+    object-position: center;
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+    box-shadow: var(--shadow-md);
+    background: var(--surface);
+  }
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    margin: 0;
+    color: var(--muted);
+  }
+  .lede {
+    font-size: 1.06rem;
+    font-weight: 400;
+    line-height: 1.74;
+    max-width: 54ch;
+    margin: 0;
+    color: var(--text);
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 0.75rem;
+  }
+  .featured {
+    margin-top: 0.25rem;
+    padding: 2.75rem 1.5rem 2.5rem;
+    background: var(--bg-soft);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in oklab, var(--border) 65%, transparent);
+    box-shadow: var(--shadow);
+  }
+
+  @media (min-width: 640px) {
+    .featured {
+      padding: 2.75rem 2rem 2.5rem;
+    }
+  }
+
+  .featured .see-all {
+    margin-top: 1.5rem;
+  }
+  .featured .see-all a {
+    font-weight: 500;
+  }
+</style>
