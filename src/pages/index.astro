@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { site } from "../config/site";
 import { getCollection } from "astro:content";
+import { href } from "../utils/paths";
 
 const all = await getCollection("projects");
 const featured = all
@@ -29,14 +30,14 @@ const featured = all
           {site.skills.map((s) => <span class="pill">{s}</span>)}
         </div>
         <div class="cta-row">
-          <a class="btn btn-primary" href="/projects">View all projects</a>
-          <a class="btn" href="/resume">Resume</a>
-          <a class="btn" href="/contact">Contact</a>
+          <a class="btn btn-primary" href={href("/projects")}>View all projects</a>
+          <a class="btn" href={href("/resume")}>Resume</a>
+          <a class="btn" href={href("/contact")}>Contact</a>
         </div>
       </div>
       <div class="hero-photo">
         <img
-          src={site.headshotSrc}
+          src={href(site.headshotSrc)}
           alt={site.headshotAlt}
           width="1024"
           height="578"
@@ -60,7 +61,7 @@ const featured = all
           ))}
         </div>
         <p class="muted see-all">
-          <a href="/projects">See everything →</a>
+          <a href={href("/projects")}>See everything →</a>
         </p>
       </section>
     )

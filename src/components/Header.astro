@@ -1,33 +1,35 @@
 ---
 import { site as siteInfo } from "../config/site";
+import { href as siteHref } from "../utils/paths";
 
-const path = Astro.url.pathname;
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
 
-function active(href: string) {
-  if (href === "/") return path === "/";
-  return path === href || path.startsWith(`${href}/`);
+function activeFor(route: string) {
+  const full = siteHref(route).replace(/\/$/, "") || "/";
+  if (route === "/") return pathname === full;
+  return pathname === full || pathname.startsWith(`${full}/`);
 }
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-  { href: "/resume", label: "Resume" },
-  { href: "/contact", label: "Contact" },
+  { path: "/", label: "Home" },
+  { path: "/projects", label: "Projects" },
+  { path: "/resume", label: "Resume" },
+  { path: "/contact", label: "Contact" },
 ] as const;
 ---
 
 <header class="header surface">
   <div class="wrap header-inner">
-    <a class="brand" href="/">{siteInfo.title}</a>
+    <a class="brand" href={siteHref("/")}>{siteInfo.title}</a>
     <nav class="nav" aria-label="Primary">
       <ul>
         {
-          links.map(({ href, label }) => (
+          links.map(({ path, label }) => (
             <li>
               <a
-                href={href}
-                class:list={["nav-link", { active: active(href) }]}
-                aria-current={active(href) ? "page" : undefined}
+                href={siteHref(path)}
+                class:list={["nav-link", { active: activeFor(path) }]}
+                aria-current={activeFor(path) ? "page" : undefined}
               >
                 {label}
               </a>

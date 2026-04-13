@@ -1,6 +1,7 @@
 # Static Astro site to GitHub Pages.
 # Settings → Pages: Source = GitHub Actions.
-# Set repository variable SITE_URL to https://<user>.github.io/<repo>/ if using project pages.
+# Set repository variable SITE_URL to https://<user>.github.io/<repo>/ (trailing slash ok).
+# ASTRO_BASE_PATH is derived from the repo name so it stays in sync with GitHub Pages.
 
 name: Deploy GitHub Pages
 
@@ -8,6 +9,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+
+# Use Node 24 for GitHub’s JavaScript actions (checkout, setup-node, deploy-pages, etc.):
+# https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 permissions:
   contents: read
@@ -31,6 +37,7 @@ jobs:
         run: npm ci && npm run build
         env:
           SITE_URL: ${{ vars.SITE_URL }}
+          ASTRO_BASE_PATH: /${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

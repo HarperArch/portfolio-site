@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import { href, resolveLink } from "../../utils/paths";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -71,7 +72,7 @@ const d = new Date(date);
           links.report && (
             <a
               class="btn"
-              href={links.report}
+              href={resolveLink(links.report)}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -83,7 +84,7 @@ const d = new Date(date);
           links.notebook && (
             <a
               class="btn"
-              href={links.notebook}
+              href={resolveLink(String(links.notebook))}
               {...(String(links.notebook).startsWith("http")
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : { download: true })}
@@ -96,7 +97,7 @@ const d = new Date(date);
           links.recommendation && (
             <a
               class="btn"
-              href={links.recommendation}
+              href={resolveLink(links.recommendation)}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -104,7 +105,7 @@ const d = new Date(date);
             </a>
           )
         }
-        <a class="btn" href="/projects">← All projects</a>
+        <a class="btn" href={href("/projects")}>← All projects</a>
       </div>
     </header>
 

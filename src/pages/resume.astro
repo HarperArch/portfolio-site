@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site } from "../config/site";
+import { href } from "../utils/paths";
+
+const resumeUrl = href(site.resumePdfPath);
 ---
 
 <BaseLayout
@@ -14,7 +17,7 @@ import { site } from "../config/site";
   <div class="actions">
     <a
       class="btn btn-primary"
-      href={site.resumePdfPath}
+      href={resumeUrl}
       download
     >
       Download PDF
@@ -24,7 +27,7 @@ import { site } from "../config/site";
   <div class="viewer surface">
     <iframe
       title="Resume PDF"
-      src={site.resumePdfPath}
+      src={resumeUrl}
       class="pdf-frame"
       loading="lazy"
     />

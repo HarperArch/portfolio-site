@@ -1,11 +1,13 @@
 ---
+import { href } from "../utils/paths";
+
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer wrap">
   <p class="muted">
     © {year} — Built with <a href="https://astro.build/">Astro</a>. Update
-    <a href="/projects">projects</a> in <code>src/content/projects/</code>.
+    <a href={href("/projects")}>projects</a> in <code>src/content/projects/</code>.
   </p>
 </footer>
 

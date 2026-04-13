@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { href, resolveLink } from "../utils/paths";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -12,7 +13,7 @@ const d = date instanceof Date ? date : new Date(date);
 
 <article class="card surface card--interactive">
   <h2 class="card-title">
-    <a href={`/projects/${project.id}`}>{title}</a>
+    <a href={href(`/projects/${project.id}`)}>{title}</a>
   </h2>
   <p class="muted card-desc">{shortDescription}</p>
   <p class="meta muted">
@@ -50,7 +51,7 @@ const d = date instanceof Date ? date : new Date(date);
     {
       links.report && (
         <a
-          href={links.report}
+          href={resolveLink(links.report)}
           target="_blank"
           rel="noopener noreferrer"
           class="report"
@@ -62,7 +63,7 @@ const d = date instanceof Date ? date : new Date(date);
     {
       links.notebook && (
         <a
-          href={links.notebook}
+          href={resolveLink(String(links.notebook))}
           {...(String(links.notebook).startsWith("http")
             ? { target: "_blank", rel: "noopener noreferrer" }
             : { download: true })}
@@ -74,7 +75,7 @@ const d = date instanceof Date ? date : new Date(date);
     {
       links.recommendation && (
         <a
-          href={links.recommendation}
+          href={resolveLink(links.recommendation)}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -82,7 +83,7 @@ const d = date instanceof Date ? date : new Date(date);
         </a>
       )
     }
-    <a href={`/projects/${project.id}`} class="more">Details →</a>
+    <a href={href(`/projects/${project.id}`)} class="more">Details →</a>
   </div>
 </article>
 
