@@ -38,6 +38,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL }}
           ASTRO_BASE_PATH: /${{ github.event.repository.name }}/
+          PUBLIC_GOATCOUNTER_URL: ${{ vars.PUBLIC_GOATCOUNTER_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

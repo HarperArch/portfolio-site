@@ -4,6 +4,7 @@ import { site } from "../config/site";
 import { href } from "../utils/paths";
 
 const resumeUrl = href(site.resumePdfPath);
+const trackedDownloadUrl = href("/r/resume-pdf");
 ---
 
 <BaseLayout
@@ -17,7 +18,7 @@ const resumeUrl = href(site.resumePdfPath);
   <div class="actions">
     <a
       class="btn btn-primary"
-      href={resumeUrl}
+      href={trackedDownloadUrl}
       download
     >
       Download PDF
