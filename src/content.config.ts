@@ -36,6 +36,11 @@ const projects = defineCollection({
           (v) => (v === "" || v == null ? undefined : v),
           z.string().optional(),
         ),
+        /** Slide deck URL or path e.g. /reports/deck.pptx */
+        presentation: z.preprocess(
+          (v) => (v === "" || v == null ? undefined : v),
+          z.string().optional(),
+        ),
         /** Jupyter notebook path under /public or full URL (e.g. nbviewer) */
         notebook: z.preprocess(
           (v) => (v === "" || v == null ? undefined : v),

@@ -61,6 +61,17 @@ const d = date instanceof Date ? date : new Date(date);
       )
     }
     {
+      links.presentation && (
+        <a
+          href={resolveLink(links.presentation)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Presentation
+        </a>
+      )
+    }
+    {
       links.notebook && (
         <a
           href={resolveLink(String(links.notebook))}

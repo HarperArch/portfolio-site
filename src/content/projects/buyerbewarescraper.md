@@ -17,6 +17,7 @@ order: 1
 links:
   github: "https://github.com/HarperArch/BuyerBewareWebScraper"
   report: "/reports/SDFinalDesignDocument.pdf"
+  presentation: "https://github.com/HarperArch/portfolio-site/releases/latest/download/FinalPresentationL02.pptx"
   recommendation: "/reports/HarperArchambault_LetterofRecommendation.pdf"
 ---
 

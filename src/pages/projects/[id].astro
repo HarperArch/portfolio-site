@@ -81,6 +81,18 @@ const d = new Date(date);
           )
         }
         {
+          links.presentation && (
+            <a
+              class="btn"
+              href={resolveLink(links.presentation)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Final presentation
+            </a>
+          )
+        }
+        {
           links.notebook && (
             <a
               class="btn"
